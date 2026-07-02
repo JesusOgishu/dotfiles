@@ -1,0 +1,347 @@
+"  PHP · Blade · JS/TS · Vue · React · CSS · Tailwind · HTML · SQL
+" ============================================================
+
+" ── AUTO-INSTALL vim-plug (primera vez al clonar) ───────────
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Crear carpeta undo si no existe
+if !isdirectory(expand('~/.vim/undo'))
+  call mkdir(expand('~/.vim/undo'), 'p')
+endif
+
+" ── TERMINAL COMPAT (Kitty → servidor) ──────────────────────
+if $TERM == 'xterm-kitty' && !has('gui_running')
+  let &t_ut=''
+  set term=xterm-256color
+endif
+
+" ── FZF PATH FIX ─────────────────────────────────────────────
+let $PATH = $HOME . '/.vim/plugged/fzf/bin:' . $PATH
+
+call plug#begin('~/.vim/plugged')
+
+" --- Colores / UI ---
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'ap/vim-css-color'              " preview de colores CSS/HEX/RGB
+Plug 'andymass/vim-matchup'
+" --- Syntax highlight ---
+Plug 'sheerun/vim-polyglot'
+Plug 'jwalton512/vim-blade'
+Plug 'nelsyeung/twig.vim'
+Plug 'posva/vim-vue'
+Plug 'maxmellon/vim-jsx-pretty'
+
+" --- Autocompletado LSP-like ---
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" --- Fuzzy finder ---
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" --- Utilidades ---
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-fugitive'            " git dentro de vim
+Plug 'airblade/vim-gitgutter'        " marcas git en sign column
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'            " cierra tags HTML/JSX/Blade automaticamente
+Plug 'mattn/emmet-vim'
+Plug 'editorconfig/editorconfig-vim'
+
+" --- Íconos — SIEMPRE AL FINAL ---
+Plug 'ryanoasis/vim-devicons'
+
+call plug#end()
+
+" ── OPCIONES BASE ────────────────────────────────────────────
+set nocompatible
+set encoding=utf-8
+set fileencoding=utf-8
+
+set number
+set relativenumber
+set signcolumn=yes
+
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set autoindent
+set smartindent
+
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+set cursorline
+set showmatch
+set scrolloff=8
+set sidescrolloff=8
+set wrap
+set linebreak
+set wildmenu
+set wildmode=longest:full,full
+
+" Performance
+set lazyredraw
+set updatetime=300
+set ttimeoutlen=10
+
+set noswapfile
+set nobackup
+set undofile
+set undodir=~/.vim/undo
+
+set splitbelow
+set splitright
+set clipboard=unnamed
+set hidden
+set shortmess+=c
+
+" ── COLORES ──────────────────────────────────────────────────
+syntax on
+set termguicolors
+set background=dark
+silent! colorscheme catppuccin_mocha
+
+" Fondo transparente (respeta Kitty)
+hi Normal      guibg=NONE ctermbg=NONE
+hi NormalNC    guibg=NONE ctermbg=NONE
+hi EndOfBuffer guibg=NONE ctermbg=NONE
+hi SignColumn  guibg=NONE ctermbg=NONE
+hi LineNr      guibg=NONE ctermbg=NONE
+
+" ── STATUS / CMD-LINE — mínimo ───────────────────────────────
+set laststatus=0       " sin statusline (sin lightline)
+set noshowmode         " sin -- INSERT -- nativo
+set noshowcmd          " sin comando parcial abajo-derecha
+set ruler              " línea:col en el área de cmd
+set rulerformat=%l:%c\ %P
+
+" ── TITLE → pane-border-status de tmux ───────────────────────
+set title
+set titleold=
+
+function! VimModeTitle() abort
+  let m = mode()
+  if     m =~# '^n'         | let label = 'NORMAL'
+  elseif m =~# '^i'         | let label = 'INSERT'
+  elseif m =~# '^v'         | let label = 'VISUAL'
+  elseif m =~# '^V'         | let label = 'V-LINE'
+  elseif m =~# "^\<C-v>"    | let label = 'V-BLOCK'
+  elseif m =~# '^R'         | let label = 'REPLACE'
+  elseif m =~# '^c'         | let label = 'COMMAND'
+  else                       | let label = m
+  endif
+  let fname = expand('%:t')
+  if fname == '' | let fname = '[No Name]' | endif
+  let &titlestring = label . '  ' . fname
+endfunction
+
+augroup VimTitle
+  autocmd!
+  autocmd ModeChanged * call VimModeTitle()
+  autocmd BufEnter    * call VimModeTitle()
+  autocmd VimEnter    * call VimModeTitle()
+augroup END
+
+" ── DEVICONS ─────────────────────────────────────────────────
+let g:webdevicons_enable       = 1
+let g:webdevicons_enable_netrw = 1
+
+" ── LEADER ───────────────────────────────────────────────────
+let mapleader = " "
+
+" ── FZF ──────────────────────────────────────────────────────
+if executable('fd')
+  let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git --exclude vendor --exclude node_modules --exclude public/storage --exclude storage/framework --exclude bootstrap/cache --exclude dist --exclude build'
+else
+  let $FZF_DEFAULT_COMMAND = 'find . -type f -not -path "./.git/*" -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./storage/framework/*" -not -path "./bootstrap/cache/*" -not -path "./dist/*"'
+endif
+
+let $FZF_DEFAULT_OPTS = '--bind=alt-j:down,alt-k:up --color=pointer:#89dceb,info:#89dceb,prompt:#89dceb,spinner:#89dceb,marker:#89dceb,hl:#89dceb,hl+:#89dceb'
+let g:fzf_layout = { 'down': '~30%' }
+let g:fzf_preview_window = []
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case
+  \       --glob "!vendor" --glob "!node_modules" --glob "!.git"
+  \       --glob "!storage/framework" --glob "!bootstrap/cache"
+  \       --glob "!dist" --glob "!build" -- '.shellescape(<q-args>),
+  \   fzf#vim#with_preview({'options': '--no-preview'}), <bang>0)
+
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine'],
+  \ 'bg+':     ['bg', 'CursorLine'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'CursorLineNr'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'CursorLineNr'],
+  \ 'pointer': ['fg', 'CocInfoSign'],
+  \ 'marker':  ['fg', 'CocHintSign'],
+  \ 'spinner': ['fg', 'CursorLineNr'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" ── EMMET ────────────────────────────────────────────────────
+let g:user_emmet_install_global = 0
+let g:user_emmet_leader_key = '<C-y>'
+
+let g:user_emmet_settings = {
+\  'php'   : { 'extends' : 'html', 'filters' : 'html' },
+\  'blade' : { 'extends' : 'html', 'filters' : 'html' },
+\  'vue'   : { 'extends' : 'html' },
+\}
+
+augroup EmmetSetup
+  autocmd!
+  autocmd FileType html,css,scss,sass,xml,vue,javascriptreact,typescriptreact EmmetInstall
+  autocmd FileType php,blade EmmetInstall
+  autocmd BufEnter *.blade.php EmmetInstall
+augroup END
+
+" ── AUTO-CLOSE TAGS ──────────────────────────────────────────
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.php,*.blade.php,*.vue,*.jsx,*.tsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx,*.vue'
+let g:closetag_filetypes = 'html,xhtml,phtml,php,blade,vue,javascriptreact,typescriptreact'
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_shortcut = '>'
+
+" ── KEYMAPS ──────────────────────────────────────────────────
+nnoremap <leader>e :w<CR>:Explore<CR>
+nnoremap <leader><Tab> :b#<CR>
+
+" Buffers
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bd :bdelete<CR>
+
+" FZF
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fh :History<CR>
+nnoremap <leader>fs :BLines<CR>
+autocmd FileType fzf tnoremap <buffer> <Esc> <C-c>
+
+" Git (fugitive + gitgutter)
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gb :Git blame<CR>
+nnoremap <leader>gd :Gdiffsplit<CR>
+nnoremap ]h :GitGutterNextHunk<CR>
+nnoremap [h :GitGutterPrevHunk<CR>
+
+" CoC (autocompletado / LSP)
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> K  :call ShowDocumentation()<CR>
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>ca <Plug>(coc-codeaction)
+nmap <leader>qf <Plug>(coc-fix-current)
+nmap <leader>fm :CocCommand editor.action.formatDocument<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Diagnósticos
+nmap <silent> [d <Plug>(coc-diagnostic-prev)
+nmap <silent> ]d <Plug>(coc-diagnostic-next)
+nnoremap <leader>d :CocDiagnostics<CR>
+
+" Splits
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Limpiar highlight
+nnoremap <Esc> :nohlsearch<CR>
+
+" ── COC — EXTENSIONES ────────────────────────────────────────
+let g:coc_global_extensions = [
+  \ 'coc-phpls',
+  \ 'coc-tsserver',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-emmet',
+  \ 'coc-tailwindcss',
+  \ 'coc-json',
+  \ 'coc-sql',
+  \ 'coc-vetur',
+  \ 'coc-prettier',
+  \ 'coc-eslint',
+  \ 'coc-snippets',
+  \ 'coc-pairs'
+  \ ]
+
+" ── FILETYPES ESPECIALES ─────────────────────────────────────
+autocmd BufRead,BufNewFile *.blade.php set filetype=blade
+autocmd BufRead,BufNewFile *.vue set filetype=vue
+autocmd FileType sql setlocal tabstop=2 shiftwidth=2
+
+" Activar guion en keyword para CSS classes
+autocmd FileType html,blade,vue,javascriptreact,typescriptreact setlocal iskeyword+=-
+
+" ── NETRW — navegación estilo Yazi ───────────────────────────
+let g:netrw_banner = 0
+
+augroup NetrwYazi
+  autocmd!
+  autocmd FileType netrw nmap <buffer> l <CR>
+  autocmd FileType netrw nmap <buffer> h -
+augroup END
+
+" ── CATPPUCCIN MOCHA OVERRIDES ───────────────────────────────
+augroup CatppuccinOverrides
+  autocmd!
+  " GitGutter
+  autocmd ColorScheme * highlight GitGutterAdd    guifg=#a6e3a1 guibg=NONE
+  autocmd ColorScheme * highlight GitGutterChange guifg=#89b4fa guibg=NONE
+  autocmd ColorScheme * highlight GitGutterDelete guifg=#f38ba8 guibg=NONE
+  " CoC diagnósticos
+  autocmd ColorScheme * highlight CocErrorSign    guifg=#f38ba8 guibg=NONE
+  autocmd ColorScheme * highlight CocWarningSign  guifg=#fab387 guibg=NONE
+  autocmd ColorScheme * highlight CocInfoSign     guifg=#89b4fa guibg=NONE
+  autocmd ColorScheme * highlight CocHintSign     guifg=#94e2d5 guibg=NONE
+  " CoC popups / hover
+  autocmd ColorScheme * highlight CocFloating     guibg=#313244
+  autocmd ColorScheme * highlight FloatBorder     guifg=#74c7ec guibg=#313244
+  " Cursor
+  autocmd ColorScheme * highlight CursorLine      guibg=#313244
+  autocmd ColorScheme * highlight CursorLineNr    guifg=#74c7ec guibg=NONE gui=bold
+  " Netrw
+  autocmd ColorScheme * highlight netrwDir        guifg=#89b4fa
+  autocmd ColorScheme * highlight netrwExe        guifg=#a6e3a1
+augroup END
+let g:matchup_matchparen_offscreen = {'method': 'popup'}
+let g:matchup_override_vimtex = 1
+" ── FIN ──────────────────────────────────────────────────────

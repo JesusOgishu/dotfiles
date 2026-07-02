@@ -1,0 +1,11 @@
+*
+!.gitignore
+!aerospace/
+!aerospace/**
+!kitty/
+!kitty/**
+!neofetch/
+!neofetch/**
+!vim/
+!vim/**
+!starship.toml

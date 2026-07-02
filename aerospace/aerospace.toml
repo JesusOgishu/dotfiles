@@ -1,0 +1,156 @@
+# ~/.aerospace.toml — Config para teclado español (macOS)
+# Generada y adaptada para layout ES
+
+after-login-command = []
+after-startup-command = []
+
+start-at-login = true
+
+# Normalizaciones
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+
+# Tiles como default (no accordion)
+default-root-container-layout = 'tiles'
+
+# Auto: monitor ancho = horizontal, monitor alto = vertical
+default-root-container-orientation = 'auto'
+
+# Teclado QWERTY español
+key-mapping.preset = 'qwerty'
+
+# El mouse sigue al foco
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = "move-mouse window-lazy-center"
+
+# Gaps entre ventanas
+[gaps]
+inner.horizontal = 18
+inner.vertical   = 18
+outer.left       = 18
+outer.bottom     = 18
+outer.top        = 18
+outer.right      = 18
+
+# ─────────────────────────────────────────────
+# MODO PRINCIPAL
+# ─────────────────────────────────────────────
+[mode.main.binding]
+
+# ── Layouts ──────────────────────────────────
+# Cambiar entre tiles horizontal / vertical
+alt-shift-t = 'layout tiles horizontal vertical'
+# Cambiar entre accordion horizontal / vertical
+alt-shift-a = 'layout accordion horizontal vertical'
+
+# ── Foco entre ventanas (vim-style) ──────────
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# ── Mover ventanas ───────────────────────────
+# Usamos cmd+shift en vez de la combinación de 4 teclas (más ergonómico)
+cmd-shift-h = 'move left'
+cmd-shift-j = 'move down'
+cmd-shift-k = 'move up'
+cmd-shift-l = 'move right'
+
+# ── Workspaces numéricos ─────────────────────
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+# ── Workspaces con letra (temáticos) ─────────
+# Nota: en teclado español alt+letra puede producir caracteres especiales.
+# Por eso usamos cmd+alt para los workspaces de letra — más seguro.
+cmd-alt-b = 'workspace B'  # Browser
+cmd-alt-d = 'workspace D'  # Docs
+cmd-alt-e = 'workspace E'  # Finder (Explorer)
+cmd-alt-m = 'workspace M'  # Music
+cmd-alt-n = 'workspace N'  # Notes
+cmd-alt-p = 'workspace P'  # Photo editing
+cmd-alt-t = 'workspace T'  # Terminal
+cmd-alt-v = 'workspace V'  # Video editing
+
+# ── Mover ventana a workspace ─────────────────
+ctrl-shift-1 = 'move-node-to-workspace 1'
+ctrl-shift-2 = 'move-node-to-workspace 2'
+ctrl-shift-3 = 'move-node-to-workspace 3'
+ctrl-shift-4 = 'move-node-to-workspace 4'
+ctrl-shift-5 = 'move-node-to-workspace 5'
+ctrl-shift-6 = 'move-node-to-workspace 6'
+ctrl-shift-7 = 'move-node-to-workspace 7'
+ctrl-shift-8 = 'move-node-to-workspace 8'
+ctrl-shift-9 = 'move-node-to-workspace 9'
+
+ctrl-shift-b = 'move-node-to-workspace B'
+ctrl-shift-d = 'move-node-to-workspace D'
+ctrl-shift-e = 'move-node-to-workspace E'
+ctrl-shift-m = 'move-node-to-workspace M'
+ctrl-shift-n = 'move-node-to-workspace N'
+ctrl-shift-p = 'move-node-to-workspace P'
+ctrl-shift-t = 'move-node-to-workspace T'
+ctrl-shift-v = 'move-node-to-workspace V'
+
+# ── Fullscreen ────────────────────────────────
+cmd-alt-shift-f = 'fullscreen'
+
+# ── Navegar entre workspaces ──────────────────
+alt-tab       = 'workspace-back-and-forth'
+cmd-alt-tab   = 'move-workspace-to-monitor --wrap-around next'
+
+# ── Entrar a modos especiales ─────────────────
+# Service mode  → cmd+alt+shift+s  (fácil de recordar: S de Service)
+cmd-alt-shift-s = 'mode service'
+# Resize mode   → cmd+alt+shift+r  (R de Resize)
+cmd-alt-shift-r = 'mode resize'
+
+# ─────────────────────────────────────────────
+# MODO RESIZE  (redimensionar ventanas)
+# Entra con: cmd+alt+shift+r
+# Sale con:  Enter o Esc
+# ─────────────────────────────────────────────
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+x = 'balance-sizes'          # balancear todas las ventanas igual
+
+minus  = 'resize smart -50'
+equal  = 'resize smart +50'
+
+enter = 'mode main'
+esc   = 'mode main'
+
+# ─────────────────────────────────────────────
+# MODO SERVICE  (acciones especiales)
+# Entra con: cmd+alt+shift+s
+# ─────────────────────────────────────────────
+[mode.service.binding]
+esc = ['reload-config', 'mode main']         # recargar config
+r   = ['flatten-workspace-tree', 'mode main'] # resetear layout
+f   = ['layout floating tiling', 'mode main'] # toggle flotante/tiling
+backspace = ['close-all-windows-but-current', 'mode main']
+
+# Unir ventanas (join) dentro de service mode
+cmd-shift-h = ['join-with left',  'mode main']
+cmd-shift-j = ['join-with down',  'mode main']
+cmd-shift-k = ['join-with up',    'mode main']
+cmd-shift-l = ['join-with right', 'mode main']
+
+# Pantalla izquierda / derecha
+cmd-alt-j = 'focus-monitor prev'
+cmd-alt-k = 'focus-monitor next'
+cmd-alt-shift-j = 'move-workspace-to-monitor prev'
+cmd-alt-shift-k = 'move-workspace-to-monitor next'
+
