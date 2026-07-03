@@ -9,3 +9,7 @@
 !vim/
 !vim/**
 !starship.toml
+!zsh/
+!zsh/**
+!tmux/
+!tmux/**
