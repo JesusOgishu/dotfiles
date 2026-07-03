@@ -27,12 +27,12 @@ on-focus-changed = "move-mouse window-lazy-center"
 
 # Gaps entre ventanas
 [gaps]
-inner.horizontal = 18
-inner.vertical   = 18
-outer.left       = 18
-outer.bottom     = 18
-outer.top        = 18
-outer.right      = 18
+inner.horizontal = 9
+inner.vertical   = 9
+outer.left       = 4
+outer.bottom     = 4
+outer.top        = 4
+outer.right      = 4
 
 # ─────────────────────────────────────────────
 # MODO PRINCIPAL
