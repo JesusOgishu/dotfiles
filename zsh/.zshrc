@@ -13,3 +13,4 @@ function y() {
     rm -f "$tmp"
 }
 [[ -z "$TMUX" ]] && tmux
+set -o vi

@@ -29,10 +29,10 @@ on-focus-changed = "move-mouse window-lazy-center"
 [gaps]
 inner.horizontal = 8
 inner.vertical   = 8
-outer.left       = 8
-outer.bottom     = 8
-outer.top        = 8
-outer.right      = 8
+outer.left       = 10
+outer.bottom     = 10
+outer.top        = 10
+outer.right      = 10
 
 # ─────────────────────────────────────────────
 # MODO PRINCIPAL
@@ -154,3 +154,8 @@ cmd-alt-k = 'focus-monitor next'
 cmd-alt-shift-j = 'move-workspace-to-monitor prev'
 cmd-alt-shift-k = 'move-workspace-to-monitor next'
 
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+
+[[on-window-detected]]
+run = 'layout tiling'
