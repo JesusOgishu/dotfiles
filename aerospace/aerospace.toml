@@ -159,3 +159,15 @@ cmd-alt-shift-k = 'move-workspace-to-monitor next'
 
 [[on-window-detected]]
 run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systemsettings'
+run = 'layout floating'
