@@ -14,3 +14,4 @@ function y() {
 }
 [[ -z "$TMUX" ]] && tmux
 set -o vi
+alias spas='ps aux | grep "artisan serve"'
