@@ -241,6 +241,9 @@ nnoremap <leader>gd :Gdiffsplit<CR>
 nnoremap ]h :GitGutterNextHunk<CR>
 nnoremap [h :GitGutterPrevHunk<CR>
 
+"Pwd on current file 
+nnoremap <leader>yd :let @+ = expand('%:p:h')<CR>
+
 " CoC (autocompletado / LSP)
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
