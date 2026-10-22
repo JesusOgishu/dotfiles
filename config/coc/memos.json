@@ -1,0 +1,51 @@
+{
+  "coc-json|global": {
+    "json-schema-cache": {
+      "https://json.schemastore.org/package.json": {
+        "etag": "W/\"69fa1cae-ad13\"",
+        "fileName": "473f72b44c2905902dfbcc770aab7f7a.schema.json",
+        "updateTime": 1778007887127
+      },
+      "https://www.schemastore.org/prettierrc.json": {
+        "etag": "W/\"69fa1cad-348d\"",
+        "fileName": "039cd8e618d38da6a8d7ed50c426c344.schema.json",
+        "updateTime": 1778008427659
+      },
+      "https://json.schemastore.org/nodemon.json": {
+        "etag": "W/\"69fa1cad-15c0\"",
+        "fileName": "bc390135086d44ba1bca60b6c9a80151.schema.json",
+        "updateTime": 1778007888051
+      },
+      "https://json.schemastore.org/ava.json": {
+        "etag": "W/\"69fa1cad-19f0\"",
+        "fileName": "635f57185b22bce9d3a56c68f5da4ad7.schema.json",
+        "updateTime": 1778007888072
+      },
+      "https://json.schemastore.org/jscpd.json": {
+        "etag": "W/\"69fa1cae-298b\"",
+        "fileName": "22bfc1ab1ff56aae62322f6ce45dab5a.schema.json",
+        "updateTime": 1778007888074
+      },
+      "https://json.schemastore.org/eslintrc.json": {
+        "etag": "W/\"69fa1cae-d779\"",
+        "fileName": "c5064f140d4cfdbf4d6fbe68f68abbb1.schema.json",
+        "updateTime": 1778007888059
+      },
+      "https://json.schemastore.org/stylelintrc.json": {
+        "etag": "W/\"69fa1cad-1c1fa\"",
+        "fileName": "000bfbdd14d2fb8ec5b0d59bec32ef98.schema.json",
+        "updateTime": 1778007888074
+      },
+      "https://json.schemastore.org/semantic-release.json": {
+        "etag": "W/\"69fa1cad-e26\"",
+        "fileName": "fbc95702ba6eddb3e2de4f52e31ca82a.schema.json",
+        "updateTime": 1778007888061
+      },
+      "https://json.schemastore.org/partial-eslint-plugins.json": {
+        "etag": "W/\"69fa1cae-72d5a\"",
+        "fileName": "fc7bb6e733b774ce47be6006f0b75b87.schema.json",
+        "updateTime": 1778007888777
+      }
+    }
+  }
+}
