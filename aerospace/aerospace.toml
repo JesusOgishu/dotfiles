@@ -44,6 +44,8 @@ outer.right      = 20
 alt-shift-t = 'layout tiles horizontal vertical'
 # Cambiar entre accordion horizontal / vertical
 alt-shift-a = 'layout accordion horizontal vertical'
+# Toggle flotante / tiling manual
+alt-shift-space = 'layout floating tiling'
 
 # ── Foco entre ventanas (vim-style) ──────────
 alt-h = 'focus left'
@@ -157,17 +159,42 @@ cmd-alt-shift-k = 'move-workspace-to-monitor next'
 [workspace-to-monitor-force-assignment]
 1 = 'main'
 
-[[on-window-detected]]
-run = 'layout tiling'
+# ─────────────────────────────────────────────
+# REGLAS DE VENTANAS
+# ─────────────────────────────────────────────
+# Por defecto TODO flota. Solo las apps de la allowlist hacen tiling.
+# Así cualquier app nueva abre como ventana emergente.
 
+[[on-window-detected]]
+run = 'layout floating'
+
+# ── Allowlist de tiling ──────────────────────
+# Finder
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
-run = 'layout floating'
+run = 'layout tiling'
 
+# Firefox
 [[on-window-detected]]
-if.app-id = 'com.apple.systempreferences'
-run = 'layout floating'
+if.app-id = 'org.mozilla.firefox'
+run = 'layout tiling'
 
+# Spotify
 [[on-window-detected]]
-if.app-id = 'com.apple.systemsettings'
-run = 'layout floating'
+if.app-id = 'com.spotify.client'
+run = 'layout tiling'
+
+# Kitty (terminal)
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.kitty'
+run = 'layout tiling'
+
+# Claude
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = 'layout tiling'
+
+# Notas
+[[on-window-detected]]
+if.app-id = 'com.apple.Notes'
+run = 'layout tiling'
