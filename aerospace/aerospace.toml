@@ -162,18 +162,21 @@ cmd-alt-shift-k = 'move-workspace-to-monitor next'
 # ─────────────────────────────────────────────
 # REGLAS DE VENTANAS
 # ─────────────────────────────────────────────
-# Por defecto TODO flota. Solo las apps de la allowlist hacen tiling.
-# Así cualquier app nueva abre como ventana emergente.
+# IMPORTANTE: las reglas se evalúan en orden y gana la PRIMERA que hace match.
+# Por eso la allowlist de tiling va primero y el floating al final como catch-all.
+# Así las apps de la lista se tilean (incluyendo ventanas nuevas con ctrl+N),
+# y cualquier otra app abre flotante.
 
+# ── Diálogos nativos (abrir/guardar archivo) ─
+# Estos los dibuja la app que los pide (Firefox, etc.), así que
+# AeroSpace los ve como ventana de esa app. Para que no se tilen,
+# forzamos floating por título ANTES de la allowlist (gana la primera regla).
+# El picker de Firefox abre con título VACÍO, de ahí el '^$'.
 [[on-window-detected]]
+if.window-title-regex-substring = '^$|Open|Save|Abrir|Guardar|Upload|Subir|Select'
 run = 'layout floating'
 
 # ── Allowlist de tiling ──────────────────────
-# Finder
-[[on-window-detected]]
-if.app-id = 'com.apple.finder'
-run = 'layout tiling'
-
 # Firefox
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefox'
@@ -198,3 +201,7 @@ run = 'layout tiling'
 [[on-window-detected]]
 if.app-id = 'com.apple.Notes'
 run = 'layout tiling'
+
+# ── Catch-all: todo lo demás flota ───────────
+[[on-window-detected]]
+run = 'layout floating'
