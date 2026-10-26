@@ -1,7 +1,7 @@
 add_newline = true
 format = """
 [   $directory  $git_branch ](bg:sapphire fg:text)[](sapphire)$character"""
-right_format = """[](sapphire)[  $time ](bg:sapphire fg:text)"""
+right_format = """[](sapphire)[ ${custom.spotify}$time  $battery ](bg:sapphire fg:text)"""
 palette = "catppuccin_mocha"
 
 [palettes.catppuccin_mocha]
@@ -50,3 +50,24 @@ time_format = "%I:%M:%S %p"
 [character]
 success_symbol = " [❯](sky)"
 error_symbol   = " [❯](red)"
+
+[custom.spotify]
+description = "Cancion sonando en Spotify"
+command     = "~/.config/starship-spotify.sh"
+when        = true
+shell       = ["bash", "--noprofile", "--norc"]
+symbol      = "  "
+style       = "bg:sapphire fg:text"
+format      = "[$symbol$output  ]($style)"
+
+[battery]
+full_symbol        = " "
+charging_symbol    = " "
+discharging_symbol = " "
+unknown_symbol     = " "
+empty_symbol       = " "
+format             = "[$percentage]($style)"
+
+[[battery.display]]
+threshold = 100
+style     = "bg:sapphire fg:text"
